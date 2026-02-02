@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>something to bring a smile to your face, i hope</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 320px;
+      cursor: pointer;
+    }
+
+    .card:active {
+        transform: scale(0.98);
+    }
+
+    h1 {
+      color: #e63946;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+
+    .heart {
+      position: absolute;
+      color: #ff4d6d;
+      font-size: 20px;
+      animation: float 5s linear infinite;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hey beautiful 👀</h1>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const lines = [
+      "No announcement.",
+      "No deep meaning.",
+      "You just crossed my mind…",
+      "and I liked that."
+    ];
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    const messageEl = document.getElementById("message");
+
+    function typeLine() {
+      if (charIndex < lines[lineIndex].length) {
+        messageEl.innerHTML += lines[lineIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeLine, 40);
+      } else {
+        messageEl.innerHTML += "<br>";
+        lineIndex++;
+        charIndex = 0;
+        if (lineIndex < lines.length) {
+          setTimeout(typeLine, 400);
+        }
+      }
+    }
+
+    typeLine();
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 10 + 15 + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    // ✅ tiny fix
+    window.heartInterval = setInterval(createHeart, 600);
+
+    let revealed = false;
+
+    document.querySelector(".card").addEventListener("click", () => {
+      if (revealed) return;
+      revealed = true;
+
+      clearInterval(window.heartInterval);
+
+      document.body.style.background =
+        "linear-gradient(135deg, #ffe5ec, #ffc2d1)";
+
+      const hidden = document.createElement("p");
+      hidden.style.marginTop = "15px";
+      hidden.style.fontSize = "16px";
+      hidden.style.color = "#555";
+      hidden.style.opacity = 0;
+      hidden.innerText = "Yeah… I meant every word.";
+
+      document.querySelector(".card").appendChild(hidden);
+
+      setTimeout(() => {
+        hidden.style.transition = "opacity 1.5s";
+        hidden.style.opacity = 1;
+      }, 200);
+    });
+  </script>
+
+</body>
+</html>
